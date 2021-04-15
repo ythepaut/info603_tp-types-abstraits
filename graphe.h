@@ -8,6 +8,8 @@
 #ifndef TP1_GRAPHE_H
 #define TP1_GRAPHE_H
 
+#include "assert.h"
+
 struct SNoeud;
 
 typedef struct SArete {

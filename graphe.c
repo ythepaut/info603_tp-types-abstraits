@@ -80,6 +80,7 @@ Arete creerArete(Noeud *noeudA, Noeud *noeudB, int poids) {
  * @param arete         in              Arete           Arête à ajouter au noeud
  */
 void ajouteArete(Noeud *noeud, Arete arete) {
+    assert(arete.noeudA == noeud || arete.noeudB == noeud);
     noeud->aretes = realloc(noeud->aretes, ++noeud->nbAretes * sizeof(Arete));
     noeud->aretes[noeud->nbAretes - 1] = arete;
 }
@@ -118,7 +119,7 @@ void dijkstra(Graphe *graphe, Noeud origine, Noeud destination) {
         predecesseurs[i] = NULL;
 
     // Initialisation du sous-graphe P contenant les noeuds parcourus
-    Graphe P = creerGraphe();
+    //Graphe P = creerGraphe();
 }
 
 int main() {
