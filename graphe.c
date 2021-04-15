@@ -36,16 +36,26 @@ Graphe *creerGraphe(const int *matriceAdjacences, int n) {
     // Lecture de la matrice d'adjacences et ajout des aretes au graphe
     for (int i = 0 ; i < graphe->ordre ; ++i) {
         Noeud *noeud = &graphe->noeuds[i];
-        for (int j = i ; j < graphe->ordre ; ++j) {
+        for (int j = 0 ; j < graphe->ordre ; ++j) {
             int poids = *((matriceAdjacences + i * n) + j);
             if (poids != 0) {
                 ajouteArete(noeud, creerArete(noeud, &graphe->noeuds[j], poids));
-                ajouteArete(noeud, creerArete(&graphe->noeuds[j], noeud, poids));
             }
         }
     }
 
     return graphe;
+}
+
+/**
+ * Libère toutes les allocations du graphe
+ * @param graphe        in-out          Graphe          Graphe à libérer
+ */
+void detruireGraphe(Graphe *graphe) {
+    for (int i = 0 ; i < graphe->ordre ; ++i)
+        free(graphe->noeuds[i].aretes);
+    free(graphe->noeuds);
+    free(graphe);
 }
 
 /**
@@ -55,11 +65,12 @@ Graphe *creerGraphe(const int *matriceAdjacences, int n) {
  * @param poids         in              int             Poids de l'arête
  * @return                                              Arête créée
  */
-Arete *creerArete(Noeud *noeudA, Noeud *noeudB, int poids) {
-    Arete *arete = (Arete *) malloc(sizeof(Arete));
-    arete->noeudA = noeudA;
-    arete->noeudB = noeudB;
-    arete->poids = poids;
+Arete creerArete(Noeud *noeudA, Noeud *noeudB, int poids) {
+    Arete arete = {
+            .noeudA = noeudA,
+            .noeudB = noeudB,
+            .poids = poids
+    };
     return arete;
 }
 
@@ -68,9 +79,9 @@ Arete *creerArete(Noeud *noeudA, Noeud *noeudB, int poids) {
  * @param noeud         in-out          Noeud           Noeud à modifier
  * @param arete         in              Arete           Arête à ajouter au noeud
  */
-void ajouteArete(Noeud *noeud, Arete *arete) {
+void ajouteArete(Noeud *noeud, Arete arete) {
     noeud->aretes = realloc(noeud->aretes, ++noeud->nbAretes * sizeof(Arete));
-    noeud->aretes[noeud->nbAretes - 1] = *arete;
+    noeud->aretes[noeud->nbAretes - 1] = arete;
 }
 
 /**
@@ -87,6 +98,28 @@ void afficheGraphe(Graphe *graphe) {
     }
 }
 
+/**
+ * Algorithme de Dijkstra : Recherche le plus cours chemin entre deux noeuds
+ * @param graphe        in              Graphe          Graphe dans lequel on fait la recherche
+ * @param origine       in              Noeud           Noeud de départ
+ * @param destination   in              Noeud           Noeud d'arrivée
+ */
+void dijkstra(Graphe *graphe, Noeud origine, Noeud destination) {
+
+    // Initialisation des poids de tous les noeuds à -1 (infini)
+    int poids[graphe->ordre];
+    for (int i = 0 ; i < graphe->ordre ; ++i)
+        poids[i] = -1;
+
+    // Initialisation des prédécesseurs, càd le noeud par lequel le chemin est le
+    // plus court pour un accéder à ce noeud
+    Noeud* predecesseurs[graphe->ordre];
+    for (int i = 0 ; i < graphe->ordre ; ++i)
+        predecesseurs[i] = NULL;
+
+    // Initialisation du sous-graphe P contenant les noeuds parcourus
+    Graphe P = creerGraphe();
+}
 
 int main() {
 
@@ -109,6 +142,8 @@ int main() {
     Graphe *graphe = creerGraphe((int *) matriceAdjacences, 13);
 
     afficheGraphe(graphe);
+
+    detruireGraphe(graphe);
 
     return EXIT_SUCCESS;
 }
