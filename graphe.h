@@ -8,6 +8,8 @@
 #ifndef TP1_GRAPHE_H
 #define TP1_GRAPHE_H
 
+#include "assert.h"
+
 struct SNoeud;
 
 typedef struct SArete {
@@ -30,9 +32,11 @@ typedef struct SGraphe {
 
 Graphe *creerGraphe(const int *matriceAdjacences, int n);
 
-Arete *creerArete(Noeud *noeudA, Noeud *noeudB, int poids);
+void detruireGraphe(Graphe *graphe);
 
-void ajouteArete(Noeud *noeud, Arete *arete);
+Arete creerArete(Noeud *noeudA, Noeud *noeudB, int poids);
+
+void ajouteArete(Noeud *noeud, Arete arete);
 
 void afficheGraphe(Graphe *graphe);
 
