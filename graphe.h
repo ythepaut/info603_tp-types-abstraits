@@ -28,7 +28,7 @@ typedef struct SGraphe {
 } Graphe;
 
 
-Graphe creerGraphe(int *matriceAdjacences, int n);
+Graphe *creerGraphe(const int *matriceAdjacences, int n);
 
 Arete *creerArete(Noeud *noeudA, Noeud *noeudB, int poids);
 

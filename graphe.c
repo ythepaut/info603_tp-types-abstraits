@@ -19,23 +19,28 @@
  * @param n                 in          int             Ordre du graphe
  * @return                                              Graphe correspondant à la matrice d'ajacences
  */
-Graphe creerGraphe(int *matriceAdjacences, int n) {
+Graphe *creerGraphe(const int *matriceAdjacences, int n) {
 
-    Graphe graphe = {
-            .ordre = n,
-            .noeuds = (Noeud *) calloc(n, sizeof(Noeud))
-    };
+    // Initialisation du graphe
+    Graphe *graphe = malloc(sizeof(Graphe));
+    graphe->ordre = n;
+    graphe->noeuds = calloc(graphe->ordre, sizeof(Noeud));
 
-    // Lecture de la matrice d'adjacences et ajout des noeuds au graphe
-    for (int i = 0; i < n; ++i) {
-        for (int j = i; j < n; ++j) {
-            Noeud *noeud = &graphe.noeuds[i];
-            noeud->numero = i;
-            noeud->aretes = calloc(0, sizeof(Arete));
-            noeud->nbAretes = 0;
-            int poids = *((matriceAdjacences+i*n) + j);
+    // Initialisation des noeuds
+    for (int i = 0 ; i < graphe->ordre ; ++i) {
+        Noeud *noeud = &graphe->noeuds[i];
+        noeud->numero = i;
+        noeud->aretes = NULL;
+        noeud->nbAretes = 0;
+    }
+    // Lecture de la matrice d'adjacences et ajout des aretes au graphe
+    for (int i = 0 ; i < graphe->ordre ; ++i) {
+        Noeud *noeud = &graphe->noeuds[i];
+        for (int j = i ; j < graphe->ordre ; ++j) {
+            int poids = *((matriceAdjacences + i * n) + j);
             if (poids != 0) {
-                ajouteArete(noeud, creerArete(noeud, &graphe.noeuds[j], poids));
+                ajouteArete(noeud, creerArete(noeud, &graphe->noeuds[j], poids));
+                ajouteArete(noeud, creerArete(&graphe->noeuds[j], noeud, poids));
             }
         }
     }
@@ -64,7 +69,7 @@ Arete *creerArete(Noeud *noeudA, Noeud *noeudB, int poids) {
  * @param arete         in              Arete           Arête à ajouter au noeud
  */
 void ajouteArete(Noeud *noeud, Arete *arete) {
-    noeud->aretes = realloc(noeud->aretes, ++noeud->nbAretes);
+    noeud->aretes = realloc(noeud->aretes, ++noeud->nbAretes * sizeof(Arete));
     noeud->aretes[noeud->nbAretes - 1] = *arete;
 }
 
@@ -73,10 +78,10 @@ void ajouteArete(Noeud *noeud, Arete *arete) {
  * @param graphe        in              Graphe          Graphe à afficher
  */
 void afficheGraphe(Graphe *graphe) {
-    for (int i = 0 ; i < graphe->ordre ; ++i) {
-        Noeud* noeud = &graphe->noeuds[i];
-        for (int j = 0 ; j < noeud->nbAretes ; ++j) {
-            Arete* arete = &noeud->aretes[j];
+    for (int i = 0; i < graphe->ordre; ++i) {
+        Noeud *noeud = &graphe->noeuds[i];
+        for (int j = 0; j < noeud->nbAretes; ++j) {
+            Arete *arete = &noeud->aretes[j];
             printf("Noeud %d    --[%d]->    Noeud %d\n", arete->noeudA->numero, arete->poids, arete->noeudB->numero);
         }
     }
@@ -101,9 +106,9 @@ int main() {
             {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 4, 4, 0}
     };
 
-    Graphe graphe = creerGraphe((int *) matriceAdjacences, 13);
+    Graphe *graphe = creerGraphe((int *) matriceAdjacences, 13);
 
-    afficheGraphe(&graphe);
+    afficheGraphe(graphe);
 
     return EXIT_SUCCESS;
 }
