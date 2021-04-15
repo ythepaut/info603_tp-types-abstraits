@@ -20,8 +20,10 @@ void afficheTableau(int* tab, int n);
 
 void tableauAleatoire(int* tab, int n, int max);
 
-int plusGrandElement(int* tab, int n, int indexDebut, int indexFin);
+int plusGrandElement(const int *tab, int indexDebut, int indexFin);
 
-int plusPetitElement(int* tab, int n, int indexDebut, int indexFin);
+int plusPetitElement(const int *tab, int indexDebut, int indexFin);
+
+int estTrie(int* tab, int indexDebut, int indexFin);
 
 #endif //TP1_UTILS_H

@@ -24,29 +24,50 @@
  * @param indiceFin      in          int         index de fin de parcours
  */
 void iterationBoustrophedon(int *t, int n, int indiceDebut, int indiceFin) {
-
     assert(0 <= indiceDebut && indiceDebut < n);
 
+    // trie à partir de la gauche
     if (indiceDebut < indiceFin) {
         for (int i = indiceDebut; i <= indiceFin; i++) {
-            assert(t[i] <= plusGrandElement(t, n, 0, n));
+
+            // l'élément courant ne peut pas être plus grand
+            // que le plus grand élément de la partie du tableau
+            // en train d'être triée
+            assert(t[i] <= plusGrandElement(t, i, n));
+
             if (t[i] > t[i + 1]) {
                 permuter(&t[i], &t[i + 1]);
             }
+
+            // l'élément permuté est forcément plus petit que
+            // n'importe quel élément de la partie de droite
+            assert(t[i] <= plusGrandElement(t, i, n));
         }
-        assert(t[indiceFin] == plusGrandElement(t, n, indiceDebut, indiceFin));
+        // le dernier élément permuté est forcément
+        // le plus grand élément de la partie qui vient d'être triée
+        assert(t[indiceFin] == plusGrandElement(t, indiceDebut, indiceFin));
     }
 
+    // trie à partir de la droite
     else if (indiceDebut > indiceFin) {
         for (int i = indiceDebut; i >= indiceFin; i--) {
-            assert(t[i] >= plusPetitElement(t, n, indiceFin, n));
+
+            // l'élément courant ne peut pas être plus petit
+            // que le plus petit élément de la partie du tableau
+            // en train d'être triée
+            assert(t[i] >= plusPetitElement(t, indiceFin, i));
+
             if (t[i] < t[i - 1]) {
                 permuter(&t[i], &t[i - 1]);
             }
+
+            // l'élément permuté est forcément plus grand que
+            // n'importe quel élément de la partie de gauche
+            assert(t[i] >= plusPetitElement(t, 0, i));
         }
-        // ici on cherche le plus petit élément depuis l'indice de fin jusqu'à celui du début
-        // car l'indice de fin est plus petit que celui du début.
-        assert(t[indiceFin] == plusPetitElement(t, n, indiceFin, indiceDebut));
+        // le dernier élément permuté est forcément
+        // le plus petit élément de la partie qui vient d'être triée
+        assert(t[indiceFin] == plusPetitElement(t, indiceFin, indiceDebut));
     }
 }
 
@@ -61,9 +82,15 @@ void iterationBoustrophedon(int *t, int n, int indiceDebut, int indiceFin) {
  */
 void boustrophedon(int* t, int n) {
     for (int k = 0; k < n / 2; k++) {
+
+        assert(estTrie(t, 0, k)); // vérifie que la partie gauche passée est triée
         iterationBoustrophedon(t, n, k, n - k - 1);
+
+        assert(estTrie(t, n - k - 2, n)); // vérifie que la partie droite passée est triée
         iterationBoustrophedon(t, n, n - k - 2, k);
     }
+    // tout le tableau est trié
+    assert(estTrie(t, 0, n));
 }
 
 int main(int argc, char *argv[]) {

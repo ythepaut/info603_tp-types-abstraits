@@ -72,12 +72,11 @@ void tableauAleatoire(int* tab, int n, int max) {
 /**
  * Retourne le plus petit élément du tableau dans l'intervalle donnée.
  * @param tab           in          int*            tableau d'entier
- * @param n             in          int             taille du tableau
  * @param indexDebut    in          int             borne minimale du parcours
  * @param indexFin      in          int             borne maximale du parcours
  * @return                                          le plus petit élément trouvé
  */
-int plusPetitElement(int* tab, int n, int indexDebut, int indexFin) {
+int plusPetitElement(const int *tab, int indexDebut, int indexFin) {
     int plusPetitElement = tab[indexDebut];
     for (int i = indexDebut; i <= indexFin; i++)
         if (tab[i] < plusPetitElement)
@@ -88,15 +87,31 @@ int plusPetitElement(int* tab, int n, int indexDebut, int indexFin) {
 /**
  * Retourne le plus grand élément du tableau dans l'intervalle donnée.
  * @param tab           in          int*            tableau d'entier
- * @param n             in          int             taille du tableau
  * @param indexDebut    in          int             borne minimale du parcours
  * @param indexFin      in          int             borne maximale du parcours
  * @return                                          le plus grand élément trouvé
  */
-int plusGrandElement(int* tab, int n, int indexDebut, int indexFin) {
+int plusGrandElement(const int *tab, int indexDebut, int indexFin) {
     int plusGrandElement = tab[indexDebut];
     for (int i = indexDebut; i <= indexFin; i++)
         if (tab[i] > plusGrandElement)
             plusGrandElement = tab[i];
     return plusGrandElement;
+}
+
+
+/**
+ * Retourne vrai si le tableau est trié
+ * à partir de la borne de début jusqu'à la borne de fin
+ * données en paramètre.
+ * @param tab
+ * @param indexDebut
+ * @param indexFin
+ * @return
+ */
+int estTrie(int* tab, int indexDebut, int indexFin) {
+    for (int i = indexDebut; i < indexFin - 1; i++)
+        if (tab[i] > tab[i + 1])
+            return 0;
+    return 1;
 }
