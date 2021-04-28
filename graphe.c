@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "graphe.h"
+#include "utils.h"
 
 
 /**
@@ -33,7 +34,7 @@ Graphe *creerGraphe(const int *matriceAdjacences, int n) {
         noeud->aretes = NULL;
         noeud->nbAretes = 0;
     }
-    // Lecture de la matrice d'adjacences et ajout des aretes au graphe
+    // Lecture de la matrice d'adjacences et ajout des arêtes au graphe
     for (int i = 0 ; i < graphe->ordre ; ++i) {
         Noeud *noeud = &graphe->noeuds[i];
         for (int j = 0 ; j < graphe->ordre ; ++j) {
@@ -100,12 +101,50 @@ void afficheGraphe(Graphe *graphe) {
 }
 
 /**
- * Algorithme de Dijkstra : Recherche le plus cours chemin entre deux noeuds
- * @param graphe        in              Graphe          Graphe dans lequel on fait la recherche
- * @param origine       in              Noeud           Noeud de départ
- * @param destination   in              Noeud           Noeud d'arrivée
+ * Fonction qui retourne vrai s'il existe un noeud dans g1 qui n'est pas dans g2
  */
-void dijkstra(Graphe *graphe, Noeud origine, Noeud destination) {
+int noeudPresent(Graphe *g1, Graphe *g2) {
+    for (int i = 0 ; i < g1->ordre ; ++i) {
+        int present = 0;
+        for (int j = 0 ; j < g2->ordre ; ++j) {
+            if (g2->noeuds[j].numero == g1->noeuds[i].numero) {
+                present = 1;
+                break;
+            }
+        }
+        if (!present) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+/**
+ * Fonction qui trouve le noeud dans g, hors du sous graphe, de plus petit poids
+ * (Utilisé pour l'algorithme de Dijkstra)
+ * @param graphe        in              Graphe*         Graphe principal
+ * @param sousGraphe    in              Graphe*         Sous graphe
+ * @param poids         in              int[]           Liste des poids des noeuds
+ * @return                                              Noeud
+ */
+Noeud *noeudDePlusPetitPoidsHorsDeP(Graphe *graphe, Graphe* sousGraphe, int poids[]) {
+    Noeud *resultat = NULL;
+    int minPoids = -1;
+
+    for (int i = 0 ; i < graphe->ordre ; ++i) {
+
+    }
+
+    return resultat;
+}
+
+/**
+ * Algorithme de Dijkstra : Recherche le plus cours chemin entre deux noeuds
+ * @param graphe        in              Graphe*         Graphe dans lequel on fait la recherche
+ * @param origine       in              Noeud*          Noeud de départ
+ * @param destination   in              Noeud*          Noeud d'arrivée
+ */
+void dijkstra(Graphe *graphe, Noeud *origine, Noeud *destination) {
 
     // Initialisation des poids de tous les noeuds à -1 (infini)
     int poids[graphe->ordre];
@@ -118,8 +157,21 @@ void dijkstra(Graphe *graphe, Noeud origine, Noeud destination) {
     for (int i = 0 ; i < graphe->ordre ; ++i)
         predecesseurs[i] = NULL;
 
-    // Initialisation du sous-graphe P contenant les noeuds parcourus
-    //Graphe P = creerGraphe();
+    // Initialisation du sous-graphe contenant les noeuds parcourus
+    int *matriceAdjacences = matriceVide(graphe->ordre, graphe->ordre);
+    Graphe *sousGraphe = creerGraphe(matriceAdjacences, graphe->ordre);
+    free(matriceAdjacences);
+
+    // Poids du noeud à l'origine initialisé à 0
+    poids[index(graphe->noeuds, graphe->ordre, origine)] = 0;
+
+    // Tant qu'il existe un sommet du graphe qui n'est pas dans sousGraphe
+    do {
+
+
+
+
+    } while (noeudPresent(graphe, sousGraphe));
 }
 
 int main() {
@@ -143,6 +195,8 @@ int main() {
     Graphe *graphe = creerGraphe((int *) matriceAdjacences, 13);
 
     afficheGraphe(graphe);
+
+    dijkstra(graphe, &graphe->noeuds[0], &graphe->noeuds[5]);
 
     detruireGraphe(graphe);
 

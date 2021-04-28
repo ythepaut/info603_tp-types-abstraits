@@ -24,6 +24,10 @@ int plusGrandElement(const int *tab, int indexDebut, int indexFin);
 
 int plusPetitElement(const int *tab, int indexDebut, int indexFin);
 
-int estTrie(int* tab, int indexDebut, int indexFin);
+int estTrie(const int* tab, int indexDebut, int indexFin);
+
+int *matriceVide(int n, int m);
+
+int index(void *tab, int taille, void* element);
 
 #endif //TP1_UTILS_H

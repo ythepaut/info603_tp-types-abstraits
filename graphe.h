@@ -40,4 +40,8 @@ void ajouteArete(Noeud *noeud, Arete arete);
 
 void afficheGraphe(Graphe *graphe);
 
+int noeudPresent(Graphe *g1, Graphe *g2);
+
+void dijkstra(Graphe *graphe, Noeud *origine, Noeud *destination);
+
 #endif //TP1_GRAPHE_H
