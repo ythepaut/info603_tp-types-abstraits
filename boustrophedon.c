@@ -12,16 +12,16 @@
 #include "utils.h"
 
 /**
- * Parcours le tableau passé en argument à partir de l'index de début jusqu'à l'index de fin.
- * Le sens du parcours est déterminé par les valeurs de l'index de début et de fin.
+ * Parcours le tableau passé en argument à partir de l'index de début jusqu'à l'indexDe de fin.
+ * Le sens du parcours est déterminé par les valeurs de l'indexDe de début et de fin.
  * Si le tableau est parcouru dans un sens ascendant, si l'élément courant
  * est plus grand que le suivant, on les permute.
  * Si le tableau est parcouru dans un sens descendant, si l'élément courant
  * est plus petit que le suivant, on les permute.
  * @param t             in-out      int*        tableau à parcourir
  * @param n             in          int         taille du tableau
- * @param indiceDebut    in          int         index de début de parcours
- * @param indiceFin      in          int         index de fin de parcours
+ * @param indiceDebut    in          int         indexDe de début de parcours
+ * @param indiceFin      in          int         indexDe de fin de parcours
  */
 void iterationBoustrophedon(int *t, int n, int indiceDebut, int indiceFin) {
     assert(0 <= indiceDebut && indiceDebut < n);
@@ -74,9 +74,9 @@ void iterationBoustrophedon(int *t, int n, int indiceDebut, int indiceFin) {
 /**
  * Parcours le tableau t en le balayant de gauche puis à droite à chaque itération.
  * Une itération de gauche à droite amène l'élément rencontré le plus grand
- * à l'index de fin en partant de l'index de début.
+ * à l'index de fin en partant de l'indexDe de début.
  * Une itération de droite droite gauche amène l'élément rencontré le plus petit
- * à l'index de fin en partant de l'index de début.
+ * à l'index de fin en partant de l'indexDe de début.
  * @param t         in-out      int*        tableau à trier
  * @param n         in          int         taille du tableau
  */

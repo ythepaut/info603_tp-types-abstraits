@@ -115,30 +115,3 @@ int estTrie(const int* tab, int indexDebut, int indexFin) {
             return 0;
     return 1;
 }
-
-/**
- * Crée une matrice n m vide
- * (Utilisé pour l'initialisation d'un graphe de n=m noeuds, sans arêtes)
- * @param n             in          int             Largeur de la matrice
- * @param m             in          int             Hauteur de la matrice
- */
-int *matriceVide(int n, int m) {
-    int* matrice = (int *) calloc(n * m, sizeof(int));
-    for (int i = 0 ; i < n ; ++i)
-        for (int j = 0 ; j < m ; ++j)
-            *((matrice + i * n) + j) = 0;
-    return matrice;
-}
-
-/**
- * Retourne l'index d'un element dans un tableau, -1 si non présent
- * @param tab           in          void*           Tableau dans lequel on cherche l'élement
- * @param taille        in          int*            Taille du tableau
- * @param element       in          void*           Élement recherché
- */
-int index(void *tab, int taille, void* element) {
-    for (int i = 0 ; i < taille ; ++i)
-        if ((tab + i) == element)
-            return i;
-    return -1;
-}

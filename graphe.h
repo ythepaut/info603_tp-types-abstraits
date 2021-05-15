@@ -40,7 +40,13 @@ void ajouteArete(Noeud *noeud, Arete arete);
 
 void afficheGraphe(Graphe *graphe);
 
-int noeudPresent(Graphe *g1, Graphe *g2);
+int indiceNoeud(Graphe *graphe, Noeud *noeud);
+
+int noeudNonParcouru(Graphe *g1, const int g2[]);
+
+int poidsEntreNoeuds(Noeud *a, Noeud *b);
+
+int noeudDePlusPetitPoidsHorsDeSousGraphe(Graphe *graphe, const int sousGraphe[], const int poids[]);
 
 void dijkstra(Graphe *graphe, Noeud *origine, Noeud *destination);
 
