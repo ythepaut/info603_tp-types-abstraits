@@ -17,6 +17,8 @@ boustrophedon: boustrophedon.o utils.o
 	$(CC) -o $@ $^
 
 graphe: graphe.o utils.o
+
+graphe2: graphe2.o utils.o
 	$(CC) -o $@ $^
 
 %.o: %.c %.h

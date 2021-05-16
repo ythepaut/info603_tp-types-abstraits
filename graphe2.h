@@ -2,41 +2,27 @@
  * INFO603 TP Exercice 3
  * Lucas CHARDONNET - Yohann THEPAUT
  *
- * Implémentation du type abstrait graphe
+ * Deuxième implémentation du type abstrait graphe
  */
 
-#ifndef TP1_GRAPHE_H
-#define TP1_GRAPHE_H
+#ifndef TP1_GRAPHE2_H
+#define TP1_GRAPHE2_H
 
 #include "assert.h"
 
-struct SNoeud;
-
-typedef struct SArete {
-    struct SNoeud *noeudA;
-    struct SNoeud *noeudB;
-    int poids;
-} Arete;
+typedef struct SGraphe {
+    int *matrice;
+    int ordre;
+} Graphe;
 
 typedef struct SNoeud {
     int numero;
-    Arete *aretes;
-    int nbAretes;
 } Noeud;
-
-typedef struct SGraphe {
-    int ordre;
-    Noeud *noeuds;
-} Graphe;
 
 
 Graphe *creerGraphe(int *matriceAdjacences, int n);
 
 void detruireGraphe(Graphe *graphe);
-
-Arete creerArete(Noeud *noeudA, Noeud *noeudB, int poids);
-
-void ajouteArete(Noeud *noeud, Arete arete);
 
 void afficheGraphe(Graphe *graphe);
 
@@ -52,4 +38,4 @@ int noeudDePlusPetitPoidsHorsDeSousGraphe(Graphe *graphe, const int sousGraphe[]
 
 void dijkstra(Graphe *graphe, Noeud *origine);
 
-#endif //TP1_GRAPHE_H
+#endif //TP1_GRAPHE2_H

@@ -2,12 +2,12 @@
  * INFO603 TP Exercice 3
  * Lucas CHARDONNET - Yohann THEPAUT
  *
- * Implémentation du type abstrait graphe
+ * Deuxième implémentation du type abstrait graphe
  */
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "graphe.h"
+#include "graphe2.h"
 
 
 /**
@@ -24,25 +24,7 @@ Graphe *creerGraphe(int *matriceAdjacences, int n) {
     // Initialisation du graphe
     Graphe *graphe = malloc(sizeof(Graphe));
     graphe->ordre = n;
-    graphe->noeuds = calloc(graphe->ordre, sizeof(Noeud));
-
-    // Initialisation des noeuds
-    for (int i = 0; i < graphe->ordre; ++i) {
-        Noeud *noeud = &graphe->noeuds[i];
-        noeud->numero = i;
-        noeud->aretes = NULL;
-        noeud->nbAretes = 0;
-    }
-    // Lecture de la matrice d'adjacences et ajout des arêtes au graphe
-    for (int i = 0; i < graphe->ordre; ++i) {
-        Noeud *noeud = &graphe->noeuds[i];
-        for (int j = 0; j < graphe->ordre; ++j) {
-            int poids = *((matriceAdjacences + i * n) + j);
-            if (poids != 0) {
-                ajouteArete(noeud, creerArete(noeud, &graphe->noeuds[j], poids));
-            }
-        }
-    }
+    graphe->matrice = matriceAdjacences;
 
     return graphe;
 }
@@ -52,37 +34,7 @@ Graphe *creerGraphe(int *matriceAdjacences, int n) {
  * @param graphe        in-out          Graphe          Graphe à libérer
  */
 void detruireGraphe(Graphe *graphe) {
-    for (int i = 0; i < graphe->ordre; ++i)
-        free(graphe->noeuds[i].aretes);
-    free(graphe->noeuds);
     free(graphe);
-}
-
-/**
- * Fonction qui crée une arête entre deux noeuds
- * @param noeudA        in              Noeud           Premier noeud à lier
- * @param noeudB        in              Noeud           Deuxieme noeud à lier
- * @param poids         in              int             Poids de l'arête
- * @return                                              Arête créée
- */
-Arete creerArete(Noeud *noeudA, Noeud *noeudB, int poids) {
-    Arete arete = {
-            .noeudA = noeudA,
-            .noeudB = noeudB,
-            .poids = poids
-    };
-    return arete;
-}
-
-/**
- * Fonction qui ajoute une arête au noeud
- * @param noeud         in-out          Noeud           Noeud à modifier
- * @param arete         in              Arete           Arête à ajouter au noeud
- */
-void ajouteArete(Noeud *noeud, Arete arete) {
-    assert(arete.noeudA == noeud || arete.noeudB == noeud);
-    noeud->aretes = realloc(noeud->aretes, ++noeud->nbAretes * sizeof(Arete));
-    noeud->aretes[noeud->nbAretes - 1] = arete;
 }
 
 /**
@@ -92,10 +44,11 @@ void ajouteArete(Noeud *noeud, Arete arete) {
 void afficheGraphe(Graphe *graphe) {
     printf("== Affichage du graphe ==\n");
     for (int i = 0; i < graphe->ordre; ++i) {
-        Noeud *noeud = &graphe->noeuds[i];
-        for (int j = 0; j < noeud->nbAretes; ++j) {
-            Arete *arete = &noeud->aretes[j];
-            printf("Noeud %d    --[%d]->    Noeud %d\n", arete->noeudA->numero, arete->poids, arete->noeudB->numero);
+        for (int j = i; j < graphe->ordre; ++j) {
+            int poids = *((graphe->matrice + i * graphe->ordre) + j);
+            if (poids != 0) {
+                printf("Noeud %d    --[%d]->    Noeud %d\n", i, poids, j);
+            }
         }
     }
     printf("========================\n");
@@ -105,7 +58,9 @@ void afficheGraphe(Graphe *graphe) {
  * Retourne le noeud i du graphe
  */
 Noeud *getNoeud(Graphe *graphe, int i) {
-    return &graphe->noeuds[i];
+    Noeud* noeud = (Noeud *) malloc(sizeof(Noeud));
+    noeud->numero = i;
+    return noeud;
 }
 
 /**
@@ -115,10 +70,7 @@ Noeud *getNoeud(Graphe *graphe, int i) {
  * @return                                              Indice du noeud dans le graphe ou -1 si non présent
  */
 int indiceNoeud(Graphe *graphe, Noeud *noeud) {
-    for (int i = 0; i < graphe->ordre; ++i)
-        if (graphe->noeuds[i].numero == noeud->numero)
-            return i;
-    return -1;
+    return noeud->numero;
 }
 
 /**
@@ -136,10 +88,7 @@ int noeudNonParcouru(Graphe *g1, const int g2[]) {
  * Fonction qui retourne le poids entre deux noeuds (0 si non voisins)
  */
 int poidsEntreNoeuds(Graphe *graphe, Noeud *a, Noeud *b) {
-    for (int i = 0; i < a->nbAretes; i++)
-        if (a->aretes[i].noeudA->numero == b->numero || a->aretes[i].noeudB->numero == b->numero)
-            return a->aretes[i].poids;
-    return 0;
+    return *((graphe->matrice + a->numero * graphe->ordre) + b->numero);
 }
 
 /**
@@ -228,10 +177,8 @@ void dijkstra(Graphe *graphe, Noeud *origine) {
 
 int main() {
 
-    printf("Implémentation du graphe avec les structures noeud et aretes (pointeurs)\n");
+    printf("Implémentation du graphe avec la matrice d'adjacences\n");
 
-    // Matrice d'adjacence uniquement utilisée pour créer le graphe avec la structure de donnée
-    // définie dans graphe.h
     int matriceAdjacences[13][13] = {
             {0, 7, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {7, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0},
