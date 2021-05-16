@@ -109,7 +109,7 @@ int plusGrandElement(const int *tab, int indexDebut, int indexFin) {
  * @param indexFin
  * @return
  */
-int estTrie(int* tab, int indexDebut, int indexFin) {
+int estTrie(const int* tab, int indexDebut, int indexFin) {
     for (int i = indexDebut; i < indexFin - 1; i++)
         if (tab[i] > tab[i + 1])
             return 0;
