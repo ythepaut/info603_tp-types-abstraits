@@ -98,9 +98,8 @@ int assertion3(int* tab, int i, int l) {
  * l < k ⇒ t[l-1] ≤ t[k+1]
  */
 int assertion4(int* tab, int l, int k) {
-    if (l < k) {
+    if (l < k)
         return tab[l-1] <= tab[k+1];
-    }
     return 1;
 }
 
@@ -108,6 +107,12 @@ int assertion4(int* tab, int l, int k) {
  * (∀x, i ≤ x ≤ positionPivot, t[x] ≤ t[pivot]) ∧ (∀y, positionPivot < y ≤ j, t[y] ≥ t[pivot])
  */
 int assertion6(int* tab, int i, int j, int pivot, int positionPivot) {
+    for (int x = i ; x < positionPivot ; ++x)
+        if (!(tab[x] <= pivot))
+            return 0;
+    for (int y = positionPivot ; y <= j ; ++y)
+        if (!(tab[y] >= pivot))
+            return 0;
     return 1;
 }
 
