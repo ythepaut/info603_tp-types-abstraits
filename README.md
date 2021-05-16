@@ -1,18 +1,28 @@
 # **1. Sémantique axiomatique de la procédure partition**
 
-**Invariants de boucle :**
+**(1)** t[i] = median(t[i], [j], t[(i + j) / 2])
 
-**(1)** 
+L'élément au début du tableau (pivot) est l'élément médian entre t[i], t[(i+j) / 2] et t[j].
 
-**(2)**
+**(2)** $\forall$x, k $\leq$ x $\leq$ j, t[x] $\gt$ t[i]
 
-**(3)**
+Les éléments à la fin du tableau sont plus grands que le pivot.
 
-**(4)**
+**(3)** $\forall$y, i $\leq$ y $\leq$ l, t[y] $\leq$ t[i]
 
-**(5)**
+Les éléments au début du tableau sont plus petits que le pivot.
 
-**(6)**
+**(4)** ($\forall$x, k+1 $\leq$ x $\leq$ j, t[x] $\gt$ t[i]) $\land$ ($\forall$y, i $\leq$ y $\leq$ l-1, t[y] $\leq$ t[i]) $\land$ ($l < k \Rightarrow$( t[l-1] $\leq$ t[k+1] ))
+
+Les éléments d'indice k à j sont plus grands que le pivot, et les éléments d'indice i+1 à l sont plus petits que le pivot.
+
+**(5)** ($\forall$x, k $\leq$ x $\leq$ j, t[x] $\gt$ t[i]) $\land$ ($\forall$y, i $\leq$ y $\leq$ l, t[y] $\leq$ t[i]) $\land$ ($l < k \Rightarrow$( t[l-1] $\leq$ t[k+1] )) $\land$ (l $\gt$ k)
+
+Les éléments d'indice k à j sont plus grands que le pivot, et les éléments d'indice i+1 à l sont plus petits que le pivot et l > k
+
+**(6)** ($\forall$x, i $\leq$ x $\leq$ position_pivot, t[x] $\leq$ t[pivot]) $\land$ ($\forall$y, position_pivot $\lt$ y $\leq$ j, t[y] $\geq$ t[pivot])
+
+Tous les éléments plus petit que le pivot sont à gauche du pivot, et tous les éléments plus grand que le pivot sont à droite du pivot.
 
 # **2. Le tri Boustrophédon**
 
@@ -51,7 +61,7 @@ fin;
 <br/>
 
 Le corps de la fonction d'itération serait alors écrit de la sorte.<br/>
-Les assertions comportent les fonctions plus_grand_element(t, a, b) et plus_petit_element(t, a, b), qui retournent l'élément indiqué dans le tableau t dans l'intervale d'indexes a et b.
+Les assertions comportent les fonctions plus_grand_élément(t, a, b) et plus_petit_élément(t, a, b), qui retournent l'élément indiqué dans le tableau t dans l'intervale d'indexes a et b.
 
 ```
 procédure itération(in_out t : tableau[1..n] de entier; in n : entier; in indice_début : entier, in indice_fin : entier );
@@ -98,12 +108,12 @@ fin;
 ```
 
 (0) 0 <= indice_debut $\wedge$ indiceDebut < n<br/>
-(1) t[i] $\le$ plus_grand_element(t, i, n)<br/>
-(2) t[i] $\le$ plus_grand_element(t, i, n)<br/>
-(3) t[indice_fin] = plus_grand_element(t, indice_debut, indice_fin)<br/>
-(4) t[i] $\ge$ plus_petit_element(t, indice_fin, i)<br/>
-(5) t[i] $\ge$ plus_petit_element(t, 0, i)<br/>
-(6) t[indice_fin] = plus_petit_element(t, indice_fin, indice_debut)<br/>
+(1) t[i] $\le$ plus_grand_élément(t, i, n)<br/>
+(2) t[i] $\le$ plus_grand_élément(t, i, n)<br/>
+(3) t[indice_fin] = plus_grand_élément(t, indice_debut, indice_fin)<br/>
+(4) t[i] $\ge$ plus_petit_élément(t, indice_fin, i)<br/>
+(5) t[i] $\ge$ plus_petit_élément(t, 0, i)<br/>
+(6) t[indice_fin] = plus_petit_élément(t, indice_fin, indice_debut)<br/>
 
 <br/>
 Le code source est disponible dans boustrophedon.c.<br/>
@@ -114,61 +124,40 @@ Le code est commenté pour expliquer les assertions, et à la différence de ci-
 
 # 3.1 Type graphe
 
-## Noeud
-
-__Sorte__ : noeud ;
-
-__utilise__ : entier, arête ;
-
-__Opérations__
-
-créer_noeud : entier * tableau de arête * entier $\to$ noeud ;<br/>
-numéro : noeud $\to$ entier ;<br/>
-arêtes : noeud $\to$ tableau de arête ;<br/>
-nombre_arêtes : noeud $\to$ entier ;<br/>
-
-__avec__<br/>
-n : noeud ;<br/>
-ta : tableau de arête ;<br/>
-a : entier ;<br/>
-
-__précondition__<br/>
-créer_noeud(n, ta, a) _est-définie-ssi_ <br/> a = 2 $\wedge$ ( $\forall$ x, 0 < x < a, noeudA( ta[a] ) = n $\vee$ noeudB( ta[a] ) = n ) ;<br/>
-
-<br/>
-
-## Arête
-
-__Sorte__ : arête ;
-
-__utilise__ : entier, noeud ;
-
-__Opérations__<br/>
-créer_arête : noeud * noeud * entier $\to$ arête ;<br/>
-noeudA : arête $\to$ noeud\ ;<br/>
-noeudB : arête $\to$ noeud ;<br/>
-poids : arête $\to$ entier ;<br/>
-
-<br/>
-
 ## Graphe
 
 __Sorte__ : graphe ;
 
-__utilise__ : entier, noeud, arête ;
+__utilise__ : entier, noeud ;
 
 __Opérations__<br/>
-créer_graphe : tableau de tableau de entier * entier $\to$ graphe ;<br/>
-détruire_graphe : graphe $\to\ \perp$ ;<br/>
+creerGraphe : tableau de tableau de entier * entier $\to$ graphe ;<br/>
 ordre : graphe $\to$ entier ;<br/>
-ajoute_arête : graphe * noeud * arete $\to\ \perp$ ;<br/>
-dijkstra : graphe * noeud * noeud $\to\ \perp$ ;<br/>
-affiche_graphe : graphe $\to\ \perp$ ;<br/>
+detruireGraphe : graphe $\to\ \perp$ ;<br/>
+afficheGraphe : graphe $\to\ \perp$ ;<br/>
+getNoeud : graphe * entier $\to$ noeud ;<br/>
+indiceNoeud : graphe * noeud $\to$ entier ;<br/>
+noeudNonParcouru : graphe * tableau de entier $\to$ entier ;<br/>
+poidsEntreNoeuds : graphe * noeud * noeud $\to$ entier ;<br/>
+noeudDePlusPetitPoidsHorsDeSousGraphe : graphe * tableau de entier * tableau de entier $\to$ entier ;<br/>
+dijkstra : graphe * noeud $\to\ \perp$ ;<br/>
 
 __avec__<br/>
+x : entier ;<br/>
 n : noeud ;<br/>
-a : arête ;<br/>
 g : graphe ;<br/>
 
-__précondition__<br/>
-ajoute_arête(n, a) est-définie-ssi noeudA(a) = n $\vee$ noeudB(a) = n ;<br/>
+__préconditions__<br/>
+getNoeud(g, x) _est-définie-ssi_ 0 $\le$ x $\le$ ordre(g) ;<br/>
+
+<br/>
+
+# 3.3 Implémentations différentes
+
+Pour la première représentation de données, nous avons utilisé les définitions de structure du langage C.
+Une structure noeud, une structure arête, et une structure graphe.<br/>
+La structure noeud possède un numéro qui lui est propre, et un ensemble d'arêtes qui sont ses arêtes adjacentes.<br/>
+La structure arête possède strictement deux noeuds, ainsi qu'un entier représentant son poid.<br/>
+La structure graphe possède quant à elle un ensemble de noeuds, et un entier représentant son ordre.<br/>
+<br/>
+Dans la seconde implémentation, un graphe est représenté par un matrice d'adjacence. Avec m comme matrice, l'arrête reliant i et j auraient comme poids m[i][j].
