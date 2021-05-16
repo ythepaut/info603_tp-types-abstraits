@@ -20,6 +20,10 @@ typedef struct SNoeud {
 } Noeud;
 
 
+void dijkstra(Graphe *graphe, Noeud *origine);
+
+
+// Fonctions communes au type graphe
 Graphe *creerGraphe(int *matriceAdjacences, int n);
 
 void detruireGraphe(Graphe *graphe);
@@ -35,7 +39,5 @@ int noeudNonParcouru(Graphe *g1, const int g2[]);
 int poidsEntreNoeuds(Graphe *graphe, Noeud *a, Noeud *b);
 
 int noeudDePlusPetitPoidsHorsDeSousGraphe(Graphe *graphe, const int sousGraphe[], const int poids[]);
-
-void dijkstra(Graphe *graphe, Noeud *origine);
 
 #endif //TP1_GRAPHE2_H

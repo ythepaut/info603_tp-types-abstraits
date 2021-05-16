@@ -103,8 +103,12 @@ fin;
 (3) t[indice_fin] = plus_grand_element(t, indice_debut, indice_fin)<br/>
 (4) t[i] $\ge$ plus_petit_element(t, indice_fin, i)<br/>
 (5) t[i] $\ge$ plus_petit_element(t, 0, i)<br/>
-(6) t[indiceFin] = plus_petit_element(t, indice_fin, indice_debut)<br/>
+(6) t[indice_fin] = plus_petit_element(t, indice_fin, indice_debut)<br/>
 
+<br/>
+Le code source est disponible dans boustrophedon.c.<br/>
+Le code est commenté pour expliquer les assertions, et à la différence de ci-dessus, les tableaux sont indexés en 0.<br/>
+<br/>
 
 # **3. Implémentation du type abstrat graphe**
 

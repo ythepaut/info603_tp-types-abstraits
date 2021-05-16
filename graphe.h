@@ -30,13 +30,13 @@ typedef struct SGraphe {
 } Graphe;
 
 
+void dijkstra(Graphe *graphe, Noeud *origine);
+
+
+// Fonctions communes au type graphe
 Graphe *creerGraphe(int *matriceAdjacences, int n);
 
 void detruireGraphe(Graphe *graphe);
-
-Arete creerArete(Noeud *noeudA, Noeud *noeudB, int poids);
-
-void ajouteArete(Noeud *noeud, Arete arete);
 
 void afficheGraphe(Graphe *graphe);
 
@@ -50,6 +50,10 @@ int poidsEntreNoeuds(Graphe *graphe, Noeud *a, Noeud *b);
 
 int noeudDePlusPetitPoidsHorsDeSousGraphe(Graphe *graphe, const int sousGraphe[], const int poids[]);
 
-void dijkstra(Graphe *graphe, Noeud *origine);
+
+// Fonctions spécifiques à l'implémentation du graphe
+Arete creerArete(Noeud *noeudA, Noeud *noeudB, int poids);
+
+void ajouteArete(Noeud *noeud, Arete arete);
 
 #endif //TP1_GRAPHE_H
