@@ -1,3 +1,6 @@
+INFO603 TP rapport<br/>
+Lucas CHARDONNET - Yohann THEPAUT
+
 # **1. Sémantique axiomatique de la procédure partition**
 
 **(1)** t[i] = median(t[i], [j], t[(i + j) / 2])
@@ -46,8 +49,10 @@ début
     tantque k < n / 2 faire
         // (1)
         itération(t, n, k, n-k);
+        // (1.1)
         // (2)
         itération(t, n, n-k-1, k);
+        // (2.1)
         k := k + 1;
     fin tantque;
     // (3)
@@ -55,7 +60,9 @@ fin;
 ```
 
 (1) est_trié(t, 1, k)<br/>
+(1.1) t[k + 1] >= t[k..n-k]<br/>
 (2) est_trié(t, n-k-1, n)<br/>
+(2.1) t[k] >= t[n-k-1..k]<br/>
 (3) est trié(t, 1, n)<br/>
 
 <br/>
